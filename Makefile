@@ -8,7 +8,7 @@ PROJNAME = maketest
 EXEC = $(PROJNAME).exe
 
 # The names of the source files.
-SRCS := $(shell ls -al | awk '/^.*\.cc$$/{print $$9} /^.*\.cpp$$/{print $$9} /^.*\.c$$/{print $$9} ' | tr '\n' ' ')
+SRCS := $(shell find . -regextype sed -regex '.*\.\(cc\?\|cpp\)' | tr '\n' ' ')
 
 # All object files necessary to build the above executablee files for the project
 OBJS := $(shell ls -al | awk '/^.*\.cc$$/{print $$9} /^.*\.cpp$$/{print $$9} /^.*\.c$$/{print $$9} ' | tr '\n' ' ' | sed 's/\.cc/.o/g' | sed 's/\.cpp/.o/g' | sed 's/\.c/.o/g')
