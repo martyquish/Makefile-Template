@@ -1,7 +1,7 @@
 #---------- Configure project settings -----------------
 
 
-# Mainly used when exporting/backing up
+# Used for any operations requiring the name of the project
 PROJNAME = maketest
 
 # Name of executable for 'make all' to build
@@ -17,7 +17,7 @@ OBJS := $(shell echo $(SRCS) | sed 's/\.\(cc\?\|cpp\)/.o/g')
 .PRECIOUS =
 
 # Specify any files which 'make clean' should remove.
-JUNK = *.o *~
+JUNK = *~
 
 # Specify a location for 'make backup' to backup your files.
 BACKUPPATH = ~/backups
@@ -59,7 +59,7 @@ all: $(EXEC)
 
 
 clean:
-	@rm $(JUNK) $(EXEC) 2> $(LOG) || true
+	@rm -r $(JUNK) $(OBJS) $(EXEC) 2> $(LOG) || true
 
 # Run this target to compile and test your program at once. It will also save an execution transcript in the file "test.out"
 test:
@@ -83,7 +83,7 @@ list:
 depend: .depend
 
 .depend: $(SRCS)
-	@echo Generating header dependencies...
+	@echo Updating header dependencies...
 	@rm -rf ./.depend
 	@$(CXX) $(CPPFLAGS) -MM $^ > ./.depend
 
