@@ -50,14 +50,14 @@ LDFLAGS =
 
 #Configure Lex/F
 # Program to interpret .l and .lex files
-LEX = /bin/flex
+LEX = /usr/bin/flex
 # Lex flags
 LFLAGS =         
 
 # --------------- Configure YACC/Bison settings --------------
 
 # Program to interpret .y files
-YACC = /bin/bison
+YACC = /usr/bin/bison
 # Yacc flags
 YFLAGS = -dy            
 
@@ -99,6 +99,7 @@ depend: .depend
 	rm -rf ./.depend
 	$(CXX) $(CPPFLAGS) -MM $^ > ./.depend
 	@echo "\n<<---------------------------------------------------------------------------->>\n"
+
 include .depend
 
 
