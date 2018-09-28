@@ -57,8 +57,8 @@ test:
 	@make
 	@echo "\n<<------------------------ Begin Output ------------------------>>\n\n"
 	@script -q -c ./$(EXEC) test.out
-	@echo "\n\n<<------------------------ End Output ------------------------>>\n"
 	@exit
+	@echo "\n\n<<------------------------ End Output ------------------------>>\n"
 	@echo "Output saved to 'test.out'\n"
 
 depend: .depend
