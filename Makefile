@@ -5,7 +5,7 @@
 PROJNAME = maketest
 
 # Name of executable for 'make all' to build
-EXEC = go
+EXEC = $(PROJNAME).exe
 
 # The names of the source files.
 SRCS := $(shell ls -al | awk '/^.*\.cc$$/{print $$9} /^.*\.cpp$$/{print $$9} /^.*\.c$$/{print $$9} ' | tr '\n' ' ')
@@ -25,6 +25,8 @@ BACKUPPATH = ~/backups
 # Specify a log file to store any automatically suppressed errors (i.e. rm not finding a certain junk file)
 LOG = make.log
 
+# The name of the file to store the most recent execution transcript from a test run using the 'test' target (make test)
+TESTFILE=test.out
 
 # -------------------- Configure C/C++ --------------------
 
@@ -70,17 +72,23 @@ test:
 	@echo "Output saved to 'test.out'\n"
 
 
+
+
+
+
 depend: .depend
 
 .depend: $(SRCS)
-	rm -rf ./.depend
-	$(CXX) $(CPPFLAGS) -MM $^ > ./.depend
+	@echo Generating header dependencies...
+	@rm -rf ./.depend
+	@$(CXX) $(CPPFLAGS) -MM $^ > ./.depend
 
 include .depend
 
 
+
+# Links the object files into the specified executable name.
 $(EXEC):$(OBJS)
-	@echo SOURCE IS $(SRCS)
-	@echo OBJECTS ARE $(OBJS)
+	@echo Linking executable: $(EXEC)
 	$(CXX) -o $(EXEC) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $(OBJS)
 
