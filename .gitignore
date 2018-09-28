@@ -1,3 +1,5 @@
+.make
+.objs
 *~
 test.out
 *.cc

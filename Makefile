@@ -10,8 +10,8 @@ EXEC = $(PROJNAME).exe
 # The names of the source files.
 SRCS := $(shell find . -regextype sed -regex '.*\.\(cc\?\|cpp\)' | tr '\n' ' ')
 
-# All object files necessary to build the above executablee files for the project
-OBJS := $(shell echo $(SRCS) | sed 's/\.\(cc\?\|cpp\)/.o/g')
+# All object files necessary to build the above executable files for the project. They will be placed in the .objs folder to keep the working directory clean
+OBJS := $(shell echo $(SRCS) | sed 's/\.\(cc\?\|cpp\)/.o/g' | sed 's/\.\//.\/.objs\//g')
 
 # Specify any intermediary files which should not be automatically cleaned during implicit chaining.
 .PRECIOUS =
@@ -32,16 +32,22 @@ TESTFILE=test.out
 
 #C++ compiler usedsettings:
 CXX = g++
+
 #C compiler used
 CC = gcc
+
 #C compiler flags
 CCFLAGS =
+
 #C++ compiler flags
 CXXFLAGS =
+
 #C preprocessor flags
 CPPFLAGS = -Wall
+
 #Linker flags
-LDFLAGS = 	 
+LDFLAGS =
+
 #Configure Lex/F
 # Program to interpret .l and .lex files
 LEX = /bin/flex
@@ -57,7 +63,6 @@ YFLAGS = -dy
 
 all: $(EXEC)
 
-
 clean:
 	@rm -r $(JUNK) $(OBJS) $(EXEC) 2> $(LOG) || true
 
@@ -71,8 +76,20 @@ test:
 	@echo "\n\n<<------------------------ End Output ------------------------>>\n"
 	@echo "Output saved to 'test.out'\n"
 
+# Initialization routine which may be run to configure the Makefile
+init:
 
-
+	@if [ ! -d ./.make ]; then \
+		mkdir .make 2>> make.log;\
+		echo "Created directory: '.make'";\
+	fi
+	@if [ ! -d ./.objs ]; then \
+		mkdir .objs 2>> make.log;\
+		echo "Created directory: '.objs'";\
+	fi
+	@echo "Updating state files..."
+	@echo $(SRCS) > .make/srcs
+	@echo $(OBJS) > .make/objs
 
 depend: .depend
 
@@ -85,8 +102,15 @@ include .depend
 
 
 
+./.objs/%.o:%.cc
+	@echo Compiling $<
+	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
+
 # Links the object files into the specified executable name.
 $(EXEC):$(OBJS)
+	@echo "\n"
 	@echo Linking executable: $(EXEC)
+	@echo "<<---------------------------------------------------------------------------->>\n"
 	$(CXX) -o $(EXEC) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $(OBJS)
+	@echo "\n<<---------------------------------------------------------------------------->>\n"
 
