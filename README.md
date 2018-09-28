@@ -1,7 +1,7 @@
 # Makefile-Template
 This is a Makefile template for C/C++ projects. It will automatically find any source files in your working directory and any subdirectories.
 
-#Targets
+# Targets
 - **all**: This will compile and link all source files in your project into an executable (the name of the executable can be specified in 
 the EXEC variable within the Makefile. The 'all' target can be called by typing either 'make all' or simply 'make'.
 
