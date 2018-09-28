@@ -2,13 +2,13 @@
 
 
 # Mainly used when exporting/backing up
-PROJNAME = scheduletest
+PROJNAME = maketest
 # Name of executable for 'make all' to build
-EXEC =
+EXEC = go
 # The names of the source files.
-SRCS = 	
+SRCS = maketester.cc	
 # All object files necessary to build the above executablee files for the project
-OBJS =
+OBJS = maketester.o
 # Specify any intermediary files which should not be automatically cleaned during implicit chaining.
 .PRECIOUS =
 # Specify any files which 'make clean' should remove.
@@ -52,6 +52,15 @@ all: $(EXEC)
 clean:
 	@rm $(JUNK) $(EXEC) 2> $(LOG) || true
 
+test:
+	@echo "Compiling..."
+	@make
+	@echo "\n<<------------------------ Begin Output ------------------------>>\n\n"
+	@script -q -c ./$(EXEC) test.out
+	@echo "\n\n<<------------------------ End Output ------------------------>>\n"
+	@exit
+	@echo "Output saved to 'test.out'\n"
+
 depend: .depend
 
 .depend: $(SRCS)
@@ -63,3 +72,4 @@ include .depend
 
 $(EXEC):$(OBJS)
 	$(CXX) -o $(EXEC) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $(OBJS)
+
