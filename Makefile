@@ -11,7 +11,7 @@ EXEC = $(PROJNAME).exe
 SRCS := $(shell find . -regextype sed -regex '.*\.\(cc\?\|cpp\)' | tr '\n' ' ')
 
 # All object files necessary to build the above executablee files for the project
-OBJS := $(shell ls -al | awk '/^.*\.cc$$/{print $$9} /^.*\.cpp$$/{print $$9} /^.*\.c$$/{print $$9} ' | tr '\n' ' ' | sed 's/\.cc/.o/g' | sed 's/\.cpp/.o/g' | sed 's/\.c/.o/g')
+OBJS := $(shell echo $(SRCS) | sed 's/\.\(cc\?\|cpp\)/.o/g')
 
 # Specify any intermediary files which should not be automatically cleaned during implicit chaining.
 .PRECIOUS =
@@ -72,7 +72,11 @@ test:
 	@echo "Output saved to 'test.out'\n"
 
 
-
+list:
+	@echo "--- SOURCE LIST ---"
+	@echo $(SRCS)
+	@echo "--- OBJECT LIST ---"
+	@echo $(OBJS)
 
 
 
