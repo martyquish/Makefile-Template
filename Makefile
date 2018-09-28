@@ -72,12 +72,6 @@ test:
 	@echo "Output saved to 'test.out'\n"
 
 
-list:
-	@echo "--- SOURCE LIST ---"
-	@echo $(SRCS)
-	@echo "--- OBJECT LIST ---"
-	@echo $(OBJS)
-
 
 
 depend: .depend
