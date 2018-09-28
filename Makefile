@@ -68,7 +68,7 @@ clean:
 
 # Run this target to compile and test your program at once. It will also save an execution transcript in the file "test.out"
 test:
-	@echo "Compiling..."
+	@echo "Building project..."
 	@make
 	@echo "\n<<------------------------ Begin Output ------------------------>>\n\n"
 	@script -q -c ./$(EXEC) test.out
@@ -104,7 +104,9 @@ include .depend
 
 ./.objs/%.o:%.cc
 	@echo Compiling $<
+	@echo "<<---------------------------------------------------------------------------->>\n"
 	$(CXX) -c -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
+	@echo "\n<<---------------------------------------------------------------------------->>\n"
 
 # Links the object files into the specified executable name.
 $(EXEC):$(OBJS)
