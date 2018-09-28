@@ -61,17 +61,19 @@ YACC = /usr/bin/bison
 # Yacc flags
 YFLAGS = -dy            
 
-all: $(EXEC)
+all: .make .objs ocleanup $(EXEC)
+
+
 
 clean:
-	@rm -r $(JUNK) $(OBJS) $(EXEC) 2> $(LOG) || true
+	@rm -r $(JUNK) .objs/* $(EXEC) 2> $(LOG) || true
 
 # Run this target to compile and test your program at once. It will also save an execution transcript in the file "test.out"
 test:
 	@echo "Building project..."
 	@make
 	@echo "\n<<------------------------ Begin Output ------------------------>>\n\n"
-	@script -q -c ./$(EXEC) test.out
+	@script -q -c./$(EXEC) test.out
 	@exit
 	@echo "\n\n<<------------------------ End Output ------------------------>>\n"
 	@echo "Output saved to 'test.out'\n"
@@ -87,9 +89,16 @@ init:
 		mkdir .objs 2>> make.log;\
 		echo "Created directory: '.objs'";\
 	fi
-	@echo "Updating state files..."
-	@echo $(SRCS) > .make/srcs
-	@echo $(OBJS) > .make/objs
+
+ocleanup:
+	OBJDIR=$(shell ls -a .objs/*.o)
+
+
+
+
+
+.make .objs: init
+
 
 depend: .depend
 
