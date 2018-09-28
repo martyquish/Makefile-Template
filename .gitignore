@@ -1,3 +1,4 @@
+test.out
 .cc
 .c
 .o
@@ -5,3 +6,4 @@
 .txt
 .depend
 *.out
+make.log

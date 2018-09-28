@@ -3,18 +3,25 @@
 
 # Mainly used when exporting/backing up
 PROJNAME = maketest
+
 # Name of executable for 'make all' to build
 EXEC = go
+
 # The names of the source files.
-SRCS = maketester.cc	
+SRCS := $(shell ls -al | awk '/^.*\.cc$$/{print $$9} /^.*\.cpp$$/{print $$9} /^.*\.c$$/{print $$9} ' | tr '\n' ' ')
+
 # All object files necessary to build the above executablee files for the project
-OBJS = maketester.o
+OBJS := $(shell ls -al | awk '/^.*\.cc$$/{print $$9} /^.*\.cpp$$/{print $$9} /^.*\.c$$/{print $$9} ' | tr '\n' ' ' | sed 's/\.cc/.o/g' | sed 's/\.cpp/.o/g' | sed 's/\.c/.o/g')
+
 # Specify any intermediary files which should not be automatically cleaned during implicit chaining.
 .PRECIOUS =
+
 # Specify any files which 'make clean' should remove.
 JUNK = *.o *~
+
 # Specify a location for 'make backup' to backup your files.
 BACKUPPATH = ~/backups
+
 # Specify a log file to store any automatically suppressed errors (i.e. rm not finding a certain junk file)
 LOG = make.log
 
@@ -34,7 +41,7 @@ CPPFLAGS = -Wall
 #Linker flags
 LDFLAGS = 	 
 #Configure Lex/F
-# Program to interpret .l and .lex fileslex settings:
+# Program to interpret .l and .lex files
 LEX = /bin/flex
 # Lex flags
 LFLAGS =         
@@ -62,6 +69,7 @@ test:
 	@echo "\n\n<<------------------------ End Output ------------------------>>\n"
 	@echo "Output saved to 'test.out'\n"
 
+
 depend: .depend
 
 .depend: $(SRCS)
@@ -72,5 +80,7 @@ include .depend
 
 
 $(EXEC):$(OBJS)
+	@echo SOURCE IS $(SRCS)
+	@echo OBJECTS ARE $(OBJS)
 	$(CXX) -o $(EXEC) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $(OBJS)
 
