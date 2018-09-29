@@ -28,6 +28,10 @@ LOG = make.log
 # The name of the file to store the most recent execution transcript from a test run using the 'test' target (make test)
 TESTFILE=test.out
 
+# Finds the name of the remote tied to this Makefile's GitHub repository
+GH_REMOTE= $(shell git remote -v | grep https://github.com/martyquish/Makefile-Template.git | awk '/.*(fetch)/{print $$1}')
+
+
 # -------------------- Configure C/C++ --------------------
 
 #C++ compiler usedsettings:
@@ -100,7 +104,8 @@ init:
 		echo "Created directory: '.objs'";\
 	fi
 
-
+update:
+	echo "The remote is $(GH_REMOTE)"
 
 
 
