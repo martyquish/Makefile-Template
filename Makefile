@@ -104,8 +104,10 @@ init:
 		echo "Created directory: '.objs'";\
 	fi
 
+# A target to update the Makefile from the master branch of the source repository on GitHub
 update:
-	echo "The remote is $(GH_REMOTE)"
+	@echo "Pulling updates from $(GH_REMOTE) master branch..."
+	git pull $(GH_REMOTE) master
 
 
 
