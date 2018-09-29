@@ -80,8 +80,8 @@ clean:
 test: all
 	@echo "\n<<------------------------ Begin Output ------------------------>>\n\n";\
 	script -q -c./$(EXEC) test.out;\
-	exit;\
-	echo "\n\n<<------------------------ End Output ------------------------>>\n";\
+	exit
+	@echo "\n\n<<------------------------ End Output ------------------------>>\n";\
 	echo "Output saved to 'test.out'\n"
 
 # Initialization routine which may be run to configure the Makefile
