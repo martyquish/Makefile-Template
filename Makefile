@@ -28,6 +28,9 @@ LOG = make.log
 # The name of the file to store the most recent execution transcript from a test run using the 'test' target (make test)
 TESTFILE=test.out
 
+# Finds the name of the remote tied to this Makefile's GitHub repository
+GH_REMOTE= $(shell git remote -v | grep https://github.com/martyquish/Makefile-Template.git | awk '/.*(fetch)/{print $$1}')
+
 # -------------------- Configure C/C++ --------------------
 
 #C++ compiler usedsettings:
@@ -83,6 +86,11 @@ test: all
 	exit
 	@echo "\n\n<<------------------------ End Output ------------------------>>\n";\
 	echo "Output saved to 'test.out'\n"
+
+snapshot: .versions
+	@SNAPSHOT_NAME=$(PROJNAME)_SNAPSHOT_$(shell date +%a-%d_%m_%y).tar.gz;\
+	tar -cvzf $$SNAPSHOT_NAME $(shell find .);\
+	mv $$SNAPSHOT_NAME .versions/
 
 # Initialization routine which may be run to configure the Makefile
 init:
