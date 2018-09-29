@@ -31,7 +31,6 @@ TESTFILE=test.out
 # Finds the name of the remote tied to this Makefile's GitHub repository
 GH_REMOTE= $(shell git remote -v | grep https://github.com/martyquish/Makefile-Template.git | awk '/.*(fetch)/{print $$1}')
 
-
 # -------------------- Configure C/C++ --------------------
 
 #C++ compiler usedsettings:
@@ -65,7 +64,7 @@ YACC = /usr/bin/bison
 # Yacc flags
 YFLAGS = -dy            
 
-all: .make/ .objs/ .versions/ $(EXEC)
+all: .make .objs .versions $(EXEC)
 	@ORPHANS='$(shell .objs/./cleanup.sh)';\
 	if [ $$ORPHANS != 'none' ]; then \
 		echo "Orphaned object files detected and cleaned: $$ORPHANS";\
@@ -87,6 +86,11 @@ test: all
 	exit
 	@echo "\n\n<<------------------------ End Output ------------------------>>\n";\
 	echo "Output saved to 'test.out'\n"
+
+snapshot: .versions
+	@SNAPSHOT_NAME=$(PROJNAME)_SNAPSHOT_$(shell date +%a-%d_%m_%y).tar.gz;\
+	tar -cvzf $$SNAPSHOT_NAME $(shell find .);\
+	mv $$SNAPSHOT_NAME .versions/
 
 # Initialization routine which may be run to configure the Makefile
 init:
@@ -111,7 +115,9 @@ update:
 
 
 
-.make/ .objs/ .versions/: init
+
+.make .objs .versions: init
+
 
 
 depend: .depend
