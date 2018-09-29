@@ -61,7 +61,7 @@ YACC = /usr/bin/bison
 # Yacc flags
 YFLAGS = -dy            
 
-all: .make .objs $(EXEC)
+all: .make .objs .versions $(EXEC)
 	@ORPHANS='$(shell .objs/./cleanup.sh)';\
 	if [ $$ORPHANS != 'none' ]; then \
 		echo "Orphaned object files detected and cleaned: $$ORPHANS";\
@@ -91,6 +91,10 @@ init:
 		mkdir .make 2>> make.log;\
 		echo "Created directory: '.make'";\
 	fi
+	@if [ ! -d ./.versions ]; then \
+		mkdir .versions 2>> make.log;\
+		echo "Created directory: '.versions'";\
+	fi
 	@if [ ! -d ./.objs ]; then \
 		mkdir .objs 2>> make.log;\
 		echo "Created directory: '.objs'";\
@@ -101,7 +105,7 @@ init:
 
 
 
-.make .objs: init
+.make .objs .versions: init
 
 
 depend: .depend
