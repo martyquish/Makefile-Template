@@ -74,7 +74,7 @@ all: .make .objs $(EXEC)
 
 
 clean:
-	@rm -r $(JUNK) .objs/* $(EXEC) 2> $(LOG) || true
+	@rm -r $(JUNK) .objs/*.o $(EXEC) 2> $(LOG) || true
 
 # Run this target to compile and test your program at once. It will also save an execution transcript in the file "test.out"
 test: all
