@@ -61,22 +61,28 @@ YACC = /usr/bin/bison
 # Yacc flags
 YFLAGS = -dy            
 
-all: .make .objs ocleanup $(EXEC)
-
+all: .make .objs $(EXEC)
+	@ORPHANS='$(shell .objs/./cleanup.sh)';\
+	if [ $$ORPHANS != 'none' ]; then \
+		echo "Orphaned object files detected and cleaned: $$ORPHANS";\
+		echo "Re-linking executable...";\
+		echo "<<---------------------------------------------------------------------------->>\n";\
+		echo '$(CXX) -o $(EXEC) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $(OBJS)';\
+		$(CXX) -o $(EXEC) $(CPPFLAGS) $(CXXFLAGS) $(LDFLAGS) $(OBJS);\
+		echo "\n<<---------------------------------------------------------------------------->>\n";\
+	fi
 
 
 clean:
 	@rm -r $(JUNK) .objs/* $(EXEC) 2> $(LOG) || true
 
 # Run this target to compile and test your program at once. It will also save an execution transcript in the file "test.out"
-test:
-	@echo "Building project..."
-	@make
-	@echo "\n<<------------------------ Begin Output ------------------------>>\n\n"
-	@script -q -c./$(EXEC) test.out
-	@exit
-	@echo "\n\n<<------------------------ End Output ------------------------>>\n"
-	@echo "Output saved to 'test.out'\n"
+test: all
+	@echo "\n<<------------------------ Begin Output ------------------------>>\n\n";\
+	script -q -c./$(EXEC) test.out;\
+	exit;\
+	echo "\n\n<<------------------------ End Output ------------------------>>\n";\
+	echo "Output saved to 'test.out'\n"
 
 # Initialization routine which may be run to configure the Makefile
 init:
@@ -90,8 +96,6 @@ init:
 		echo "Created directory: '.objs'";\
 	fi
 
-ocleanup:
-	OBJDIR=$(shell ls -a .objs/*.o)
 
 
 
