@@ -31,6 +31,9 @@ TESTFILE=test.out
 # Finds the name of the remote tied to this Makefile's GitHub repository
 GH_REMOTE= $(shell git remote -v | grep https://github.com/martyquish/Makefile-Template.git | awk '/.*(fetch)/{print $$1}')
 
+# Set to 1 for verbose snapshotting. Set to 0 for quiet snapshotting
+SNAPSHOT_VERBOSE=0
+
 # -------------------- Configure C/C++ --------------------
 
 #C++ compiler usedsettings:
@@ -88,9 +91,13 @@ test: all
 	echo "Output saved to 'test.out'\n"
 
 snapshot: .versions
-	@SNAPSHOT_NAME=$(PROJNAME)_SNAPSHOT_$(shell date +%a-%d_%m_%y).tar.gz;\
-	tar -cvzf $$SNAPSHOT_NAME $(shell find .);\
-	mv $$SNAPSHOT_NAME .versions/
+	@SNAPSHOT_NAME=.versions/$(PROJNAME)_$(shell date +%a-%d_%m_%y_%H:%M:%S).tar.gz;\
+	if [ '$(SNAPSHOT_VERBOSE)' = '1' ]; then\
+		tar -cvzf $$SNAPSHOT_NAME $(shell find .);\
+	else\
+		tar -czf $$SNAPSHOT_NAME $(shell find .);\
+	fi
+
 
 # Initialization routine which may be run to configure the Makefile
 init:
