@@ -133,7 +133,7 @@ depend: .depend
 	@echo Updating header dependencies...
 	@echo "<<---------------------------------------------------------------------------->>\n"
 	rm -rf ./.depend
-	$(CXX) $(CPPFLAGS) -MM $^ > ./.depend
+	$(CXX) $(CPPFLAGS) -MM $^ | sed 's/^/\.\/objs\//'> ./.depend
 	@echo "\n<<---------------------------------------------------------------------------->>\n"
 
 include .depend
